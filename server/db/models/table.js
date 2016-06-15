@@ -14,22 +14,11 @@ var schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant'
     },
-    reservation: [{
+    reservations: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Reservation'
     }]
 });
 
-// schema.statics.checkAvailability = function(restaurantId, date, size){
-//     this.find({restaurant: restaurantId, date: { $gte: beg, $lte: end }, {status: tentative}, size: { $gte: min, $lte: max }})
-//     .then(function(table){
-//         if (!table) return false;
-//         else return true;
-//     })
-// }
-
-// schema.method.blockTable = function(tableId, date, restaurantAvgTime){
-
-// }
 
 mongoose.model('Table', schema);

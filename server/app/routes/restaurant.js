@@ -16,6 +16,15 @@ router.get('/:restaurantId', function(req, res, next){
 	.catch(next)
 })
 
+//get tables for a given restaurant
+router.get('/:restaurantId/table', function(req, res, next){
+	Table.find({restaurant: req.params.restaurantId}).populate('reservations')
+	.then(function(tables){
+		res.status(200).send(tables);
+	})
+	.catch(next)
+})
+
 //get all restaurants
 router.get('/', function(req, res, next){
 	Restaurant.find({})
@@ -52,7 +61,3 @@ router.delete('/:restaurantId', function(req, res, next){
 	})
 	.catch(next)
 })
-
-
-
-

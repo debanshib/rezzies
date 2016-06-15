@@ -1,13 +1,14 @@
+
 'use strict';
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 var _ = require('lodash');
 
 var schema = new mongoose.Schema({
-    date: {
+    beg: {
         type: Date
     },
-    actualBeg: {
+    end: {
         type: Date
     },
     user: {
@@ -28,50 +29,45 @@ var schema = new mongoose.Schema({
     }
 });
 
-schema.statics.checkAvailability = function(restaurantId, date, size){
-	console.log('in checkAvailability static with restaurantId, date, size: ', restaurantId, date, size)
-	var avgDuration;
-	var qbeg = new Date(date);
-	var qend;
-	return mongoose.model('Restaurant').findById(restaurantId)
-	.then(function(restaurant){
-		console.log('in checkAvailability static, found restaurant: ', restaurant)
-		var avgDuration = restaurant.avgDuration;
-		var x = qbeg;
-		qend = x.setMinutes(x.getMinutes()+avgDuration);
-		return mongoose.model('Table')
-		.find({
-			restaurant: restaurantId,
-			maxAvailable: { $gte: size},
-			minAvailable: { $lte: size }})
-		.populate('reservation')
-	})
+
+schema.statics.checkAvailability = function(restaurantId, qbeg, qend, size){
+	return mongoose.model('Table')
+	.find({
+		restaurant: restaurantId,
+		maxAvailable: { $gte: size},
+		minAvailable: { $lte: size }})
+	.populate('reservations')
 	.then(function(tables){
-		console.log('in checkAvailability static, found tables: ', tables)
 		if (!tables){
 			console.log('no tables available for that restaurant and size')
 			return null;
 		}
-		if (!tables.reservations) {
-			console.log('tables are fully free')
-			return tables[0];
-		}
+		var tableBooked;
 		var newTables = tables.filter(function(table){
-			var tableBooked;
+			if (table.reservations.length === 0){
+					tableBooked = false;
+			}
+			else {
 			table.reservations.forEach(function(reservation){
-				if (reservation.beg === qbeg || reservation.end === qend) {
+				console.log('reservation in checkAvailability: ', reservation)
+				if (reservation.beg.toDateString() === qbeg.toDateString() || reservation.end.toDateString() === qend.toDateString()) {
 					tableBooked = true;
 					console.log('in A or B');
 				}
-				else if (reservation.beg < qbeg && reservation.end > qbeg) {
+				else if (reservation.beg.toDateString() < qbeg.toDateString() && reservation.end.toDateString() > qbeg.toDateString()) {
 					tableBooked = true;
 					console.log('in C');
 				}
-				else if (reservation.beg > qbeg && reservation.beg < qend) {
+				else if (reservation.beg.toDateString() > qbeg.toDateString() && reservation.beg.toDateString() < qend.toDateString()) {
 					tableBooked = true;
 					console.log('in D');
 				}
+				else {
+					tableBooked = false;
+					console.log('in E')
+				}
 			})
+		}
 		console.log('table Booked? ', tableBooked)
 		return !tableBooked;
 	});
@@ -79,6 +75,5 @@ schema.statics.checkAvailability = function(restaurantId, date, size){
 	else return null;
 	})
 }
-
 
 mongoose.model('Reservation', schema);

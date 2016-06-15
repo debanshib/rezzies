@@ -6,25 +6,22 @@ var Promise = require('bluebird');
 module.exports = router;
 var _ = require('lodash');
 
-//get tables for a given restaurant
-router.get('/:restaurantId', function(req, res, next){
-	Table.find({restaurant: req.params.restaurantId})
+router.get('/', function(req, res, next){
+	Table.find({})
 	.then(function(tables){
 		res.status(200).send(tables);
 	})
-	.catch(next)
 })
 
 //create new table for a restaurant
-router.post('/:restaurantId', function(req, res, next){
-	// req.body.restaurant = req.params.restaurantId;
-	console.log('in create table post route')
+router.post('/', function(req, res, next){
 	Table.create({
 		minAvailable: req.body.minAvailable, 
 		maxAvailable: req.body.maxAvailable, 
-		restaurant: req.params.restaurantId
+		restaurant: req.body.restaurantId
 	})
 	.then(function(newTable){
+		console.log('created new Table', newTable)
 		res.status(201).send(newTable);
 	})
 	.catch(next)

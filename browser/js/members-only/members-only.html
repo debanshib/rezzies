@@ -1,0 +1,29 @@
+<section id="reservation">
+
+    <div class="container">
+        <form name="myForm" ng-submit="submit()">
+		    <label for="restaurantSelect"> Restaurant: </label>
+		    <select name="restaurantSelect" id="restaurantSelect" ng-model="rezzie.restaurantSelect">
+      			<option ng-repeat="restaurant in restaurants" value="{{restaurant._id}}">{{restaurant.name}}</option>
+   			 </select>
+   			<input type="submit" id="submit" value="Submit" />
+
+			<table style="width:100%">
+			  	<tr ng-repeat="table in tables">
+				  	<td>
+					  	<div class='circle'>{{table.minAvailable}}/{{table.maxAvailable}}</div>
+				  	</td>
+				  	<td ng-repeat='reservation in table.reservations'>
+				  		{{reservation.beg}} -
+				  		{{reservation.end}}
+				  	</td>
+				</tr>
+
+			</table>
+  		</form>
+    </div>
+
+
+
+</section>
+

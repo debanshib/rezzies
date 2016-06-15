@@ -1,0 +1,40 @@
+<section id="reservation">
+
+    <div class="container">
+        <form name="myForm" ng-submit="submit()">
+		    <label for="restaurantSelect"> Restaurant: </label>
+		    <select name="restaurantSelect" id="restaurantSelect" ng-model="rezzie.restaurantSelect">
+      			<option ng-repeat="restaurant in restaurants" value="{{restaurant._id}}">{{restaurant.name}}</option>
+   			 </select>
+   			<label for="hourSelect"> Date: </label>
+		    <select name="monthSelect" id="monthSelect" ng-model="rezzie.monthSelect">
+      			<option ng-repeat="i in months" value="{{i}}">{{i}}</option>
+   			</select>
+   			<select name="daySelect" id="daySelect" ng-model="rezzie.daySelect">
+      			<option ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]" value="{{i}}">{{i}}</option>
+   			</select>
+
+   			<label for="hourSelect"> Time: </label>
+		    <select name="hourSelect" id="hourSelect" ng-model="rezzie.hourSelect">
+      			<option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]" value="{{i}}">{{i}}</option>
+   			</select>
+   			:
+   			<select name="minSelect" id="minSelect" ng-model="rezzie.minSelect">
+      			<option ng-repeat="i in ['00','15','30','45']" value="{{i}}">{{i}}</option>
+   			</select>
+   			<select name="AMPMSelect" id="AMPMSelect" ng-model="rezzie.AMPMSelect">
+      			<option value="AM">AM</option>
+            <option value="PM">PM</option>
+   			</select>
+        <label for="guestSelect"> Number of Guests: </label>
+        <select name="guestSelect" id="guestSelect" ng-model="rezzie.guestSelect">
+            <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8]" value="{{i}}">{{i}}</option>
+        </select>
+   			<input type="submit" id="submit" value="Submit" />
+  		</form>
+    </div>
+
+
+
+</section>
+

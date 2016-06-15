@@ -37,22 +37,26 @@ var schema = new mongoose.Schema({
 });
 
 schema.statics.findOrCreate = function(email){
-    console.log('in findOrCreate User static with email:', email)
+    // console.log('in findOrCreate User static with email:', email)
     var self = this;
     if (email){
         return this.findOne({email: email})
         .then(function(user){
-            console.log('found existing user', user)
+            // console.log('found existing user', user)
             return user;
         })
     }
     else {
-        var newUser = new User();
+        var newUser = new self();
         newUser.email = email;
-        console.log('created new user', user)
+        newUser.type = 'guest';
+        // console.log('created new user', user)
         return newUser.save();
     }
 };
+
+
+
 
 // method to remove sensitive information from user objects before sending them out
 schema.methods.sanitize = function () {
