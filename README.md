@@ -1,3 +1,2 @@
 # rezzies
-Simple reservation system developed
-MEAN stack
+Simple reservation system developed with MEAN stack
